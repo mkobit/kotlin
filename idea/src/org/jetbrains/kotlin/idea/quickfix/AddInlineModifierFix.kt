@@ -56,12 +56,4 @@ class AddInlineModifierFix(
             return AddInlineModifierFix(parameter, KtTokens.NOINLINE_KEYWORD)
         }
     }
-
-    object SuspendFactory : KotlinSingleIntentionActionFactory() {
-        override fun createAction(diagnostic: Diagnostic): IntentionAction? {
-            val parameter = diagnostic.psiElement as? KtParameter ?: return null
-            return AddInlineModifierFix(parameter, KtTokens.NOINLINE_KEYWORD)
-        }
-    }
-
 }

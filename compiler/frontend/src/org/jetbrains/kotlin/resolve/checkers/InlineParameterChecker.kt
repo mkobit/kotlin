@@ -31,7 +31,7 @@ import org.jetbrains.kotlin.resolve.BindingContext
 
 object InlineParameterChecker : SimpleDeclarationChecker {
     override fun check(
-            declaration: KtDeclaration, descriptor: DeclarationDescriptor, diagnosticHolder: DiagnosticSink, bindingContext: BindingContext
+        declaration: KtDeclaration, descriptor: DeclarationDescriptor, diagnosticHolder: DiagnosticSink, bindingContext: BindingContext
     ) {
         if (declaration is KtFunction) {
             val inline = declaration.hasModifier(KtTokens.INLINE_KEYWORD)
@@ -40,11 +40,6 @@ object InlineParameterChecker : SimpleDeclarationChecker {
                 if (!inline || (parameterDescriptor != null && !parameterDescriptor.type.isBuiltinFunctionalType)) {
                     parameter.reportIncorrectInline(KtTokens.NOINLINE_KEYWORD, diagnosticHolder)
                     parameter.reportIncorrectInline(KtTokens.CROSSINLINE_KEYWORD, diagnosticHolder)
-                }
-
-                if (inline && !parameter.hasModifier(KtTokens.NOINLINE_KEYWORD) &&
-                    parameterDescriptor?.type?.isSuspendFunctionType == true) {
-                    diagnosticHolder.report(Errors.INLINE_SUSPEND_FUNCTION_TYPE_UNSUPPORTED.on(parameter))
                 }
             }
         }
